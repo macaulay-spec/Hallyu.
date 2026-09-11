@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="ink_950">#0C0B10</color>
-    <style name="Theme.Hallyu" parent="android:Theme.Material.NoActionBar">
-        <item name="android:windowBackground">@color/ink_950</item>
-        <item name="android:statusBarColor">@color/ink_950</item>
-        <item name="android:navigationBarColor">@color/ink_950</item>
-    </style>
-</resources>

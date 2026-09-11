@@ -1,0 +1,6 @@
+{
+  "name": "Hallyu",
+  "description": "A K-drama community app",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

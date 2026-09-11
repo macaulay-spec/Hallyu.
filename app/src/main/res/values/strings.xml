@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hallyu</string>
+    <!-- Web Client ID from Firebase Console (client_type 3) -->
+    <string name="default_web_client_id">188074698582-lt1969oqt9n4rk1jd1vhorcs110v3v2a.apps.googleusercontent.com</string>
+</resources>
