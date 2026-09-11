@@ -4,7 +4,8 @@ import app.hallyu.data.model.Drama
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class DramaRepository(private val firestore: FirebaseFirestore?) {
+class DramaRepository(private val firebaseProvider: FirebaseProvider) {
+    private val firestore: FirebaseFirestore? = firebaseProvider.firestore
 
     suspend fun getDramas(): List<Drama> {
         if (firestore == null) return emptyList()

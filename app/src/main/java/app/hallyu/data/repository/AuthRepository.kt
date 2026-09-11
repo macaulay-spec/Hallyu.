@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository(
-    private val auth: FirebaseAuth?,
-    private val firestore: FirebaseFirestore?
+    private val firebaseProvider: FirebaseProvider
 ) {
+    private val auth: FirebaseAuth? = firebaseProvider.auth
+    private val firestore: FirebaseFirestore? = firebaseProvider.firestore
+
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser: StateFlow<User?> = _currentUser
 

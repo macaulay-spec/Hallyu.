@@ -16,7 +16,7 @@ fun AppNavigation() {
     val isAlreadyLoggedIn = remember {
         try {
             Firebase.auth.currentUser != null
-        } catch (e: Exception) {
+        } catch (t: Throwable) {
             false
         }
     }

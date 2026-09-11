@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     factory { app.hallyu.ui.main.HomeViewModel(get(), get()) }
-    single { AuthRepository(get(), get()) }
+    single { AuthRepository(get()) }
     single { DramaRepository(get()) }
     single { FeedRepository(get()) }
     factory { app.hallyu.ui.auth.AuthViewModel(get()) }

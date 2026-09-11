@@ -6,7 +6,8 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
-class FeedRepository(private val firestore: FirebaseFirestore?) {
+class FeedRepository(private val firebaseProvider: FirebaseProvider) {
+    private val firestore: FirebaseFirestore? = firebaseProvider.firestore
 
     suspend fun getFeed(): List<Post> {
         if (firestore == null) return getLocalFallbackPosts()
