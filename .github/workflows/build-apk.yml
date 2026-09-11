@@ -27,7 +27,14 @@ jobs:
         run: |
           if [ ! -f "app/google-services.json" ]; then
             echo "Generating fallback google-services.json for build..."
-            echo '{"project_info":{"project_number":"188074698582","project_id":"hallyu-873b2","storage_bucket":"hallyu-873b2.firebasestorage.app"},"client":[{"client_info":{"mobilesdk_app_id":"1:188074698582:android:b471d0fd0b89ba9d9898f7","android_client_info":{"package_name":"app.hallyu.android.rewrite"}},"oauth_client":[],"api_key":[{"current_key":"dummy"}],"services":{"analytics_service":{"status":1}}}]}' > app/google-services.json
+            echo '{"project_info":{"project_number":"188074698582","project_id":"hallyu-76248","storage_bucket":"hallyu-76248.firebasestorage.app"},"client":[{"client_info":{"mobilesdk_app_id":"1:188074698582:android:b471d0fd0b89ba9d9898f7","android_client_info":{"package_name":"app.hallyu.android.rewrite"}},"oauth_client":[{"client_id":"188074698582-lt1969oqt9n4rk1jd1vhorcs110v3v2a.apps.googleusercontent.com","client_type":3}],"api_key":[{"current_key":"AIzaSyD5uREnyq1U2zP-ZER0T6IR9xJJsCZAMeg"}],"services":{"analytics_service":{"status":1}}}]}' > app/google-services.json
+          fi
+
+      - name: Configure Keystore
+        run: |
+          mkdir -p ~/.android
+          if [ -f "debug.keystore" ]; then
+            cp debug.keystore ~/.android/debug.keystore
           fi
 
       - name: Grant execute permission for gradlew
@@ -39,6 +46,10 @@ jobs:
 
       - name: Build Debug APK with Gradle
         run: ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: Print Keystore Certificate Fingerprints
+        run: |
+          keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep -E "SHA1|SHA256" || true
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4

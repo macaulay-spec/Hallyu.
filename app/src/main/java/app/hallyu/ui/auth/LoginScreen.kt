@@ -47,7 +47,12 @@ fun LoginScreen(
             }
         } catch (e: ApiException) {
             e.printStackTrace()
-            viewModel.setError("Google Sign-In failed (${e.statusCode}): ${e.localizedMessage ?: "Unknown error"}")
+            val message = when (e.statusCode) {
+                10 -> "Google Sign-In Error 10 (DEVELOPER_ERROR): Please add SHA-1 fingerprint to Firebase Console & ensure Google Sign-In is enabled with Support Email."
+                12500 -> "Google Sign-In Error 12500: Please enable Google Sign-In and select a Support Email in Firebase Console."
+                else -> "Google Sign-In failed (${e.statusCode}): ${e.localizedMessage ?: "Unknown error"}"
+            }
+            viewModel.setError(message)
         }
     }
 

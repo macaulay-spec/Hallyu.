@@ -66,12 +66,29 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         if (result.isSuccess) {
             _isSuccess.value = true
         } else {
-            // Check for configuration error
-            val msg = result.exceptionOrNull()?.message ?: defaultErrorMessage
-            _error.value = if (msg.contains("CONFIGURATION_NOT_FOUND") || msg.contains("12500")) {
-                "Firebase Auth is not enabled in your Firebase Console. Please enable Email/Password, Google, and Apple in the Firebase Console."
-            } else {
-                msg
+            val ex = result.exceptionOrNull()
+            val msg = ex?.message ?: defaultErrorMessage
+            _error.value = when {
+                msg.contains("CONFIGURATION_NOT_FOUND", ignoreCase = true) ||
+                msg.contains("OPERATION_NOT_ALLOWED", ignoreCase = true) ||
+                msg.contains("disabled", ignoreCase = true) -> {
+                    "Email/Password or Google Auth is not enabled in Firebase Console. Go to Firebase Console > Authentication > Sign-in method and enable them."
+                }
+                msg.contains("INVALID_LOGIN_CREDENTIALS", ignoreCase = true) ||
+                msg.contains("wrong-password", ignoreCase = true) ||
+                msg.contains("user-not-found", ignoreCase = true) -> {
+                    "Invalid email or password. Please verify your credentials."
+                }
+                msg.contains("email-already-in-use", ignoreCase = true) -> {
+                    "This email is already registered. Please log in instead."
+                }
+                msg.contains("weak-password", ignoreCase = true) -> {
+                    "Password is too weak. Please use at least 6 characters."
+                }
+                msg.contains("12500") || msg.contains("10") -> {
+                    "Google Sign-In configuration error. Ensure Google is enabled with a Support Email and SHA-1 in Firebase Console."
+                }
+                else -> msg
             }
         }
     }
