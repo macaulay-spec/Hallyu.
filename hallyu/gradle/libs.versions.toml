@@ -1,0 +1,19 @@
+[versions]
+kotlin = "2.2.20"
+agp = "8.13.0"
+composeMultiplatform = "1.11.0"
+activityCompose = "1.9.3"
+navigationCompose = "2.10.0"
+koin = "4.1.0"
+
+[libraries]
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }

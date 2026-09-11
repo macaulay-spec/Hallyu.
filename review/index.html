@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HALLYU — Pre-Build Design Gate (For Review)</title>
+<style>
+  :root{
+    --ink:#0C0B10; --ink2:#121116; --surface:#15141A; --surface2:#1D1B24;
+    --line:#2A2833; --t1:#F4F2F7; --t2:#A8A5B3; --t3:#6F6C7C;
+    --violet:#4A1C6E; --blue:#2D6CDF; --coral:#FF6B6B;
+    --grad:linear-gradient(135deg,#4A1C6E,#2D6CDF);
+    --green:#3DD68C; --amber:#FFB454; --red:#FF5470; --blue2:#4DA3FF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--t1);font:15px/1.55 Inter,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:48px 24px 96px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:34px;letter-spacing:-.02em;margin-bottom:6px}
+  h2{font-size:24px;letter-spacing:-.02em;margin:56px 0 16px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:13px;font-weight:600;color:#fff;background:var(--grad);border-radius:999px;padding:3px 12px}
+  h3{font-size:17px;margin:28px 0 10px;color:var(--t1)}
+  h4{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin:22px 0 8px}
+  p{color:var(--t2);margin:8px 0}
+  a{color:var(--blue2);text-decoration:none}
+  .sub{color:var(--t2);margin-bottom:28px}
+  .wave{height:10px;background:
+    radial-gradient(circle at 8px 10px, transparent 6px, var(--line) 6px, var(--line) 7px, transparent 7px);background-size:16px 10px;margin:28px 0 0;opacity:.6}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card.wide{grid-column:1/-1}
+  .card h3{margin-top:0}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th{text-align:left;color:var(--t2);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--t2);vertical-align:top}
+  td b,td strong{color:var(--t1);font-weight:600}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--t2);margin:2px 4px 2px 0;white-space:nowrap}
+  .chip.g{border-color:transparent;background:var(--grad);color:#fff}
+  .chip.warn{border-color:var(--amber);color:var(--amber)}
+  .chip.block{border-color:var(--red);color:var(--red)}
+  .chip.ok{border-color:var(--green);color:var(--green)}
+  ul{margin:8px 0 8px 20px;color:var(--t2)}
+  li{margin:5px 0}
+  code{background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:12.5px;color:#c9d4ff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;font-size:12.5px;line-height:1.5;color:var(--t2);margin:10px 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .status{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-width:180px}
+  .stat .big{font-size:22px;font-weight:700;letter-spacing:-.01em}
+  .stat .lab{font-size:12px;color:var(--t2)}
+  .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .swatches{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+  .sw{width:86px}
+  .sw .box{height:52px;border-radius:10px;border:1px solid var(--line)}
+  .sw .nm{font-size:11px;color:var(--t2);margin-top:4px}
+  .sw .hx{font-size:11px;color:var(--t3);font-family:ui-monospace,monospace}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:14px}
+  .shot{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .shot img{width:100%;display:block;aspect-ratio:9/19.5;object-fit:cover;background:var(--ink2)}
+  .shot .cap{padding:10px 12px;font-size:13px;color:var(--t1)}
+  .shot .cap span{display:block;font-size:11px;color:var(--t3);margin-top:2px}
+  .shot.pending{display:flex;align-items:center;justify-content:center;aspect-ratio:9/19.5;border-style:dashed;color:var(--t3);font-size:12.5px;text-align:center;padding:20px}
+  .note{border-left:3px solid var(--violet);background:var(--surface);border-radius:0 12px 12px 0;padding:14px 18px;margin:14px 0;color:var(--t2)}
+  .note b{color:var(--t1)}
+  footer{margin-top:72px;color:var(--t3);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>HALLYU <span class="grad">·</span> Pre-Build Design Gate</h1>
+  <div class="sub">Scope confirmation · Architecture plan · Design system · Screen mockups — <b>for review before Section 40 Phase 1.</b> &nbsp;Sept 11, 2026 · branch <code>arena/01a08f30-hallyu</code></div>
+  <div class="wave"></div>
+
+  <div class="status">
+    <div class="stat"><div class="big">3</div><div class="lab">plan documents (docs/01–03)</div></div>
+    <div class="stat"><div class="big">19</div><div class="lab">ambiguities flagged (4 true blockers, each with fallback)</div></div>
+    <div class="stat"><div class="big">35 / 35</div><div class="lab">mockups rendered — full Section 37 inventory + Section 38 states</div></div>
+    <div class="stat"><div class="big">0</div><div class="lab">lines of app code written — per the gate</div></div>
+  </div>
+
+  <div class="note"><b>How to review:</b> everything below is summarized here; the canonical full documents are <code>docs/01-scope-confirmation.md</code>, <code>docs/02-architecture-plan.md</code>, <code>docs/03-design-system.md</code>. Mockups live in <code>docs/04-mockups/</code>. The 4 <span class="chip block">BLOCKER</span> items (A-1, A-8, A-9, A-10) don't dead-end any phase — each has a documented fallback — but they're the ones I most want your call on.</div>
+
+  <!-- ============================ 1. SCOPE ============================ -->
+  <h2><span class="n">1</span> Scope Confirmation</h2>
+  <p class="sub">Repo state at planning time: the Master Build Specification only — no code, no schema, no assets. Phase 0 starts from a clean slate.</p>
+
+  <h3>In the MVP (Section 20, restated in full in doc 01)</h3>
+  <div class="cards">
+    <div class="card"><h3>Identity</h3><div><span class="chip">email + social auth</span><span class="chip">profile, avatar, banner, bio</span><span class="chip">follows / followers</span><span class="chip">privacy settings</span></div></div>
+    <div class="card"><h3>Community</h3><div><span class="chip">posts (≤5,000 chars, 8 categories)</span><span class="chip">images (≤6/post)</span><span class="chip">comments + 3-level replies</span><span class="chip">reactions</span><span class="chip">reposts</span><span class="chip">bookmarks</span><span class="chip">hashtags</span><span class="chip">mentions</span><span class="chip">communities</span></div></div>
+    <div class="card"><h3>K-drama layer</h3><div><span class="chip">dramas (TMDB, cached)</span><span class="chip">episodes (first-class)</span><span class="chip">actors</span><span class="chip">drama hubs</span><span class="chip">episode discussions</span><span class="chip">currently watching</span><span class="chip">drama / actor follows</span><span class="chip">spoiler system</span></div></div>
+    <div class="card"><h3>Discovery</h3><div><span class="chip">Explore</span><span class="chip">search (7 object types)</span><span class="chip">trending (velocity-based)</span><span class="chip">For You</span><span class="chip">Following</span></div></div>
+    <div class="card"><h3>Trust</h3><div><span class="chip">reports</span><span class="chip">block / mute (user, drama, community)</span><span class="chip">moderation pipeline + appeals</span><span class="chip">verified / official accounts</span><span class="chip">basic AI moderation</span><span class="chip">spoiler engine</span></div></div>
+    <div class="card"><h3>Retention</h3><div><span class="chip">notifications (3 categories)</span><span class="chip">followed-drama updates</span><span class="chip">episode reminders</span></div></div>
+  </div>
+  <p style="margin-top:12px"><b>Video:</b> not an MVP feature — but <code>post_media.media_type</code> includes <code>video</code> so v1.1 lands without a migration (§22).</p>
+
+  <h3>Explicitly out of MVP (Section 21 — each restated, with return window)</h3>
+  <table>
+    <tr><th>#</th><th>Excluded</th><th>Returns</th></tr>
+    <tr><td>1</td><td>Direct messaging</td><td><b>v1.1</b></td></tr>
+    <tr><td>2</td><td>Group messaging</td><td>later, unscheduled (flagged A-12)</td></tr>
+    <tr><td>3</td><td>Live streaming</td><td><b>v2</b></td></tr>
+    <tr><td>4</td><td>Creator monetization</td><td><b>v2</b></td></tr>
+    <tr><td>5</td><td>Subscription monetization</td><td>v2 family, unscheduled (A-12)</td></tr>
+    <tr><td>6</td><td>Community events / watch parties</td><td><b>v1.1</b></td></tr>
+    <tr><td>7</td><td>Advanced video editor</td><td><b>v1.1</b> (richer creator tooling)</td></tr>
+    <tr><td>8</td><td>Large OST licensing system</td><td>long-term (§43)</td></tr>
+    <tr><td>9</td><td>Third-party public API</td><td><b>v2</b></td></tr>
+    <tr><td>10</td><td>Web application</td><td><b>v2</b></td></tr>
+    <tr><td>11</td><td>Marketplace</td><td>long-term (§43)</td></tr>
+    <tr><td>12</td><td>Integrated drama streaming</td><td>v2/long-term — licensed partnerships only, never unauthorized (§24)</td></tr>
+    <tr><td>13</td><td>AR filters</td><td>long-term (§43)</td></tr>
+    <tr><td>14</td><td>Podcast integration</td><td>long-term (§43)</td></tr>
+  </table>
+
+  <h3>Ambiguities — flagged, not guessed (19 total; full text in doc 01)</h3>
+  <table>
+    <tr><th>ID</th><th>Ambiguity</th><th>Proposed resolution</th><th>Status</th></tr>
+    <tr><td>A-1</td><td>"email/social auth" — providers unspecified</td><td>Email+password (baseline) + Apple + Google. KakaoTalk deferred to v1.1 unless you say otherwise.</td><td><span class="chip block">BLOCKER · Phase 0</span></td></tr>
+    <tr><td>A-2</td><td>What is an <code>episode_discussion</code> — container vs. tag</td><td>Tagged stream: posts tag the episode; episode page = its spoiler-gated stream. Tagged posts also appear in Home feeds (never a silo).</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-3</td><td>Spoiler level vs. episode tag look redundant in §9's example</td><td>Independent axis: <code>spoiler_level</code> = "spoils through ep N", separate from episode tags; blur = viewer's progress &lt; level. AI source audited.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-4</td><td>Reaction set never defined by the spec</td><td>5 curated: ♥ like, 😍 crush, 😭 crying, 🔥 fire, 👏 clap — each with its own semantic color. Double-tap = like.</td><td><span class="chip warn">approve</span></td></tr>
+    <tr><td>A-5</td><td>Repost mechanics unspecified</td><td>X-style: appears in your timeline with original author preserved; plain repost only (no quote-post in MVP).</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-6</td><td>How "official" is official in MVP</td><td>Badge + display layer + follow/mute in-app; granting is an internal permission-gated admin screen (no mockup, per the gate). Seeding proposed: tvN, JTBC, Netflix KR + 1–2 production houses.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-7</td><td>"optional story/update rings" (§4) vs. absent from §20</td><td>Not built. Replaced by a "Now Airing" horizontal module on Home.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-8</td><td>TMDB credentials in this environment</td><td>Verified TMDB is now API v4 (Bearer read token). Full sync adapter + Edge Function cron + idempotent seed script; goes live with one config line.</td><td><span class="chip block">BLOCKER · Phase 2</span></td></tr>
+    <tr><td>A-9</td><td>AI moderation provider unnamed</td><td>One provider-agnostic adapter; MVP behavior = suggest, don't punish (spoiler suggestions editable; auto-actions only for high-confidence spam/dup, always appealable).</td><td><span class="chip block">BLOCKER · Phase 5 slice</span></td></tr>
+    <tr><td>A-10</td><td>Push needs Expo/FCM/APNs credentials</td><td>In-app notifications fully real regardless; push behind one adapter that logs + no-ops until credentials exist.</td><td><span class="chip block">BLOCKER · Phase 5 slice</span></td></tr>
+    <tr><td>A-11</td><td>"Private profiles where supported"</td><td>In MVP: toggle in Privacy, RLS-enforced.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-12</td><td>Group messaging & subscription monetization appear in §21 but in neither §41 nor §42</td><td>Treated as "later, unscheduled" — out of MVP either way.</td><td><span class="chip warn">note</span></td></tr>
+    <tr><td>A-13</td><td>Data export ("where required") vs. deletion</td><td>Deletion in MVP (soft-delete → purge job). Export deferred — RLS/Postgres structure makes it a later report, not a rebuild.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-14</td><td>Episode-release timing: TMDB air date vs. community "it dropped"</td><td>TMDB air date is schedule of record; community "It's out" updates watched_episodes, not the schedule.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-15</td><td>Comment length limit (spec silent)</td><td>1,000 chars.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-16</td><td>Max images per post ("multiple")</td><td>6 images, 4:5 or 16:9.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-17</td><td>Effect of "mute a drama / community" unspecified</td><td>Tagged posts hidden from both feeds + notifications suppressed; reversible in Settings.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-18</td><td>Following feed composition mechanics</td><td>Chronological posts from followed users, followed dramas (tagged + official), followed actors, joined communities, followed officials. No ranking.</td><td><span class="chip warn">confirm</span></td></tr>
+    <tr><td>A-19</td><td>Session policy</td><td>Standard Supabase sessions; multi-device; "log out everywhere".</td><td><span class="chip warn">confirm</span></td></tr>
+  </table>
+
+  <h3>What "done" means (§45, in my own words)</h3>
+  <div class="card wide">
+    <p style="color:var(--t1)">A feature is done when <b>all 12</b> hold, verified end-to-end against the real Supabase backend: UI matching the approved mockup · real tables/migrations · RLS tested <i>both</i> ways (allowed works, forbidden refused) · server-side logic where correctness/secrecy demands it · deliberate loading / error / empty states · analytics events firing · accessibility addressed · security addressed (no secrets in bundle, no client-trusted privilege, rate limits) · real-device tests pass · and the full flow works from account A, is visible from account B, and is undoable. "A button that opens nothing is not a feature. A beautiful screen backed by fake JSON is not a production application." If any screen can't hit its mockup's bar in build, I flag it — I don't quietly ship flatter.</p>
+  </div>
+
+  <!-- ============================ 2. ARCHITECTURE ============================ -->
+  <h2><span class="n">2</span> Architecture Plan</h2>
+  <p class="sub">Full schema, RLS matrix, and all details in <code>docs/02-architecture-plan.md</code>. Stack per §29: Expo RN + TypeScript · Supabase (Postgres/Auth/Storage/Realtime/Edge Functions) · FCM/APNs via Expo · Sentry · EAS. Modular monolith — no Redis, no microservices (§30).</p>
+
+  <div class="card wide">
+    <h3 style="margin-top:0">System shape</h3>
+    <pre>
+Expo RN app ──────────────── Supabase ────────────── external (server-side only)
+ expo-router (deep links)    Postgres + RLS         TMDB v4  ← tmdb-sync Edge Function (6h cron)
+ TanStack Query (server s.)  Realtime (narrow)      AI provider ← ai-moderation adapter
+ Zustand (client s.)         Edge Functions:        (suggest-don't-punish in MVP)
+ FastImage + blurhash        tmdb-sync · episode-releases (30min cron)
+ Expo push tokens ────────── push-delivery (FCM/APNs) · fan-out triggers</pre>
+    <p>Client reads <b>local Postgres only</b> — no TMDB keys in the bundle, no live TMDB calls, works offline. Both external deps sit behind one adapter each (§54: missing credential = documented config, never fake success).</p>
+  </div>
+
+  <h3>Data model — 35 tables, grouped (fields/types/keys/indexes in full in doc 02)</h3>
+  <table>
+    <tr><th>Group</th><th>Tables</th><th>Key decisions</th></tr>
+    <tr><td><b>Identity &amp; graph</b></td><td>users · profiles · user_preferences · device_tokens · follows · drama_follows · actor_follows · blocks · mutes</td><td>Explicit follow tables per target (no polymorphic follows); profiles holds display + role + verification flags; <code>mutes</code> covers user/drama/community in one table</td></tr>
+    <tr><td><b>K-drama layer</b></td><td>genres · dramas · drama_genres · actors · drama_cast · episodes · watching_status · watched_episodes</td><td><code>tmdb_id</code> unique = sync identity; <code>watching_status.watched_through</code> + per-episode rows drive spoiler safety (§25A: explicit); episodes are PK-keyed (drama, season, number)</td></tr>
+    <tr><td><b>Content</b></td><td>hashtags · posts · post_drama_tags · post_episode_tags · post_media · post_hashtags · post_mentions · reposts · bookmarks · post_reactions · comments · comment_reactions · comment_mentions</td><td>≤1 drama/post (trigger); episode must belong to post's drama; media metadata separate; <code>spoiler_level</code> (A-3) + <code>spoiler_source user|ai</code>; comment depth trigger-capped at 2 (3 levels); 5-reaction enum (A-4)</td></tr>
+    <tr><td><b>Communities</b></td><td>communities · community_members · community_roles · community_rules</td><td>Roles scoped per community — a mod of one community has zero power in another (§14)</td></tr>
+    <tr><td><b>Official &amp; verification</b></td><td>official_accounts · verification_requests</td><td>Administrative records; display flags live on profiles; granting = admin-gated flow only</td></tr>
+    <tr><td><b>Notifications</b></td><td>notifications · notification_preferences · drama_notification_settings</td><td>Every row carries a <code>deep_link</code>; per-category + per-drama prefs; quiet hours on user_preferences</td></tr>
+    <tr><td><b>Trust &amp; audit</b></td><td>reports · moderation_actions · audit_logs</td><td>Report → classify → auto-action (only high-confidence spam/dup) → human queue → decision → appeal → audit log; AI never sole authority (§27, §39.13)</td></tr>
+    <tr><td><b>Plumbing</b></td><td>tmdb_sync_state · trends</td><td>Sync watermark (skip unchanged); trending = 15-min velocity snapshots — not "most likes" (§6)</td></tr>
+  </table>
+
+  <h3>Security (RLS) — designed before client exposure (§25A)</h3>
+  <ul>
+    <li>Helper functions: <code>is_platform_staff()</code>, <code>is_community_staff(cid)</code>, <code>is_follower(a,b)</code> — <b>no policy ever checks <code>is_verified</code></b> as an authorization input (§26).</li>
+    <li>Feeds read through RPCs (<code>fn_for_you</code>, <code>fn_following</code>) so block relationships are applied deterministically (RLS can't express "visible unless we block each other" cleanly).</li>
+    <li>Spoilers are <b>presentation, not deletion</b>: content is always sent; the veil hides casual exposure and is always revealable. Withholding = moderation (<code>is_hidden</code>).</li>
+    <li>Privileged writes (verify, ban, platform remove, role changes) require the role at query time + always write <code>audit_logs</code>.</li>
+  </ul>
+
+  <h3>Navigation &amp; deep links (expo-router, file-based)</h3>
+  <pre>
+(auth)  splash · welcome · login · signup · recovery
+(onboard) interests · dramas · actors · communities · done
+(tabs)  index(Home: For You|Following) · explore · create · notifications · profile
+post/[id]   drama/[id]   drama/[id]/ep/[n]   actor/[id]   community/[slug]
+hashtag/[slug]   search?q=   profile/[username]/[tab]   settings/…   admin/queue (gated)
+
+deep links (push payloads carry the same strings):
+hallyu://post/{id}[?c={comment}]  hallyu://drama/{id}  hallyu://drama/{id}/ep/{n}
+hallyu://actor/{id}  hallyu://community/{slug}  hallyu://hashtag/{slug}
+hallyu://profile/{username}[/{tab}]  hallyu://search?q=  hallyu://home?feed=following
+hallyu://create?drama={id}[&amp;ep={n}]   ← pre-filled composer from the episode page</pre>
+
+  <h3>Core Daily Loop → screens (§2)</h3>
+  <table>
+    <tr><th>Step</th><th>Where you land</th><th>How you move</th></tr>
+    <tr><td><b>Discover</b></td><td>Home → For You (Now Airing module) or Explore</td><td>Rank explainable-signal feed; Explore sections: Trending (velocity), Airing, Upcoming, Popular, Actors, Communities, Officials, Hashtags</td></tr>
+    <tr><td><b>Follow</b></td><td>Drama hub / Actor / Profile / Community headers</td><td>Gradient Follow pill, thumb reach; drama follow offers "add to Currently Watching" (one sheet, §13 "not homework")</td></tr>
+    <tr><td><b>Watch</b></td><td>Episode page (notification deep-link or hub list)</td><td>Spoiler banner computes from progress: "through Ep 11" → Reveal for session / "I watched Ep 12 ✓" (updates progress)</td></tr>
+    <tr><td><b>Discuss</b></td><td>Episode page composer (pre-filled) or Create tab</td><td>write → tag drama/ep → media → tags/mentions → spoiler status → preview → publish; AI spoiler suggestion inline, editable</td></tr>
+    <tr><td><b>React</b></td><td>Post detail</td><td>5-reaction bar, double-tap like, 3-level comments, repost, bookmark, share — all optimistic with rollback</td></tr>
+    <tr><td><b>Connect</b></td><td>Post → author profile; Explore → actors/communities</td><td>Follow fan / join community / follow actor; each surfaces the next layer of their people</td></tr>
+    <tr><td><b>Return</b></td><td>Push → deep link; Home next open</td><td>Episode-release push (critical, per-drama opt-in, quiet-hours aware) → episode page; "You're caught up" empty state</td></tr>
+  </table>
+
+  <h3>State &amp; data fetching · TMDB · Notifications</h3>
+  <div class="cards">
+    <div class="card"><h3>State (no overlapping libraries, §29)</h3><ul>
+      <li><b>TanStack Query v5</b> — all server state; cursor-paginated infinite feeds (20/page); metadata staleTime 24h (it's synced, not live); social reads 30s + refetch-on-focus.</li>
+      <li><b>Zustand</b> — UI slices only: feed segment, spoiler reveal set, composer draft, onboarding progress, followed/muted sets.</li>
+      <li><b>Supabase Realtime, deliberately narrow</b>: in-app notifications + live episode-discussion mode only. Home feeds pull, not stream.</li>
+      <li>Optimistic: reactions, bookmarks, follows, comments, mark-watched — each with rollback + toast.</li>
+    </ul></div>
+    <div class="card"><h3>TMDB (A-8, verified current model)</h3><ul>
+      <li><b>API v4</b>, application-level Bearer read token in Supabase secrets — client never sees it.</li>
+      <li><code>tmdb-sync</code> Edge Function, 6h cron: discover KR TV (discover/on-the-air/upcoming, ko-KR) → per-drama details/seasons/credits/persons → upsert by <code>tmdb_id</code>; fingerprint skips unchanged; <b>never deletes on absence</b>.</li>
+      <li>Everything cached locally; images hotlink TMDB CDN (FastImage + blurhash, attribution in About) with Storage-rehost fallback built into the adapter.</li>
+      <li>No token in this env yet → full adapter ships + idempotent editorial seed; go-live = one config line.</li>
+    </ul></div>
+    <div class="card"><h3>Notifications (§18)</h3><ul>
+      <li>Critical: episode_release, reply, mention · Important: community announcement, actor update, official announcement · Optional: trending, recommendation, milestone (in-app only by default).</li>
+      <li>Fan-out filters per recipient: category prefs, per-drama settings, mutes, blocks, quiet hours (push deferred, in-app kept).</li>
+      <li><code>episode-releases</code> cron (30 min) fires from synced air dates → deep link to the veiled episode page.</li>
+      <li>Every notification carries its deep link; cold-start taps queue until the session is ready.</li>
+    </ul></div>
+  </div>
+
+  <h3>Roles &amp; permissions (§26)</h3>
+  <table>
+    <tr><th>Capability</th><th>user</th><th>community mod</th><th>official</th><th>platform mod</th><th>admin</th></tr>
+    <tr><td>Post / comment / react / follow / join</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Pin / lock / hide / remove, ban, approve members — <b>own community only</b></td><td>—</td><td>✓</td><td>—</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Platform-wide hide / remove / restore, appeals</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Read &amp; resolve reports</td><td>own</td><td>community</td><td>—</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Grant / revoke verification</td><td>—</td><td>—</td><td>—</td><td>review</td><td>✓ approve</td></tr>
+    <tr><td>Platform config (roles, thresholds, trends)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr>
+  </table>
+  <p><b>Verification never confers power</b> — content identity only; every privileged write audits to <code>audit_logs</code>.</p>
+
+  <h3>Phases (Section 40) with exit criteria</h3>
+  <table>
+    <tr><th>Phase</th><th>Delivers</th><th>Done when (from §45)</th></tr>
+    <tr><td>0</td><td>Project, router, Supabase, auth, full schema + RLS, design-system implementation, error/analytics foundation</td><td>Sign up → session → logout clean; every table RLS'd; CI green</td></tr>
+    <tr><td>1</td><td>Profiles, follows, posts + images, comments, reactions, reposts, bookmarks, mentions, hashtags</td><td>Two accounts, full flow persisted, RLS tested both ways, all states, events firing</td></tr>
+    <tr><td>2</td><td>Drama/actor/episode graph, tmdb-sync + seed, hubs, episode discussions, watching, spoiler engine</td><td>Sync idempotent; Ep-7 user veiled on Ep-8 post; progress change un-veils</td></tr>
+    <tr><td>3</td><td>Explore, search, trending job + scoring, For You, Following</td><td>Followed drama reaches Following feed; search finds all 7 types; trending decays, no monoculture</td></tr>
+    <tr><td>4</td><td>Communities: create/join, public/private, rules, mods, feeds</td><td>Private blocked for non-members; mod power scoped to own community (proven)</td></tr>
+    <tr><td>5</td><td>Reports + queue + appeals, blocks/mutes, verification flow, AI moderation, notifications + deep links</td><td>§44 security matrix passes; episode-release cron fires → deep link to veiled page</td></tr>
+    <tr><td>6</td><td>Performance, accessibility, analytics completeness, Sentry, tests, security review, release builds</td><td>§48 final product test = YES on a real device, no P0/P1 open</td></tr>
+  </table>
+
+  <!-- ============================ 3. DESIGN SYSTEM ============================ -->
+  <h2><span class="n">3</span> Design System — "The Wave"</h2>
+  <p class="sub">Full spec in <code>docs/03-design-system.md</code>. Original by design (§35): not Apple's look, Apple's level of craft. The brand is 한류 — the Korean Wave — and the only ornament in the system is a single sine-wave line: logo, dividers, progress, loading, empty states. Everything else is flat, dark, and quiet so drama imagery and fan text carry the energy.</p>
+
+  <h3>Color (tokens)</h3>
+  <div class="swatches">
+    <div class="sw"><div class="box" style="background:#0C0B10"></div><div class="nm">ink-950 · bg</div><div class="hx">#0C0B10</div></div>
+    <div class="sw"><div class="box" style="background:#15141A"></div><div class="nm">surface · cards</div><div class="hx">#15141A</div></div>
+    <div class="sw"><div class="box" style="background:#4A1C6E"></div><div class="nm">brand violet</div><div class="hx">#4A1C6E</div></div>
+    <div class="sw"><div class="box" style="background:#2D6CDF"></div><div class="nm">brand blue</div><div class="hx">#2D6CDF</div></div>
+    <div class="sw"><div class="box" style="background:#FF6B6B"></div><div class="nm">accent coral · likes/live</div><div class="hx">#FF6B6B</div></div>
+    <div class="sw"><div class="box" style="background:#3DD68C"></div><div class="nm">success</div><div class="hx">#3DD68C</div></div>
+    <div class="sw"><div class="box" style="background:#FFB454"></div><div class="nm">warning</div><div class="hx">#FFB454</div></div>
+    <div class="sw"><div class="box" style="background:#FF5470"></div><div class="nm">danger</div><div class="hx">#FF5470</div></div>
+  </div>
+  <p>Gradient (135° violet→blue) appears <b>only</b> on: primary buttons, active tab, follow state, progress, logo, the one "airing" hairline. Never on backgrounds or card fills (§35A). Text: #F4F2F7 / #A8A5B3 / #6F6C7C (metadata only).</p>
+
+  <h3>Reactions — semantic color system (A-4)</h3>
+  <table>
+    <tr><th>♥ like</th><th>😍 crush</th><th>😭 crying</th><th>🔥 fire</th><th>👏 clap</th></tr>
+    <tr>
+      <td><span style="color:#FF6B6B">■ #FF6B6B</span> — agree</td>
+      <td><span style="color:#FF8FB1">■ #FF8FB1</span> — ship it / the lead</td>
+      <td><span style="color:#6FA8FF">■ #6FA8FF</span> — this destroyed me (the K-drama essential)</td>
+      <td><span style="color:#FF9F45">■ #FF9F45</span> — masterpiece, hype</td>
+      <td><span style="color:#9D7BFF">■ #9D7BFF</span> — respect, craft, OST</td>
+    </tr>
+  </table>
+
+  <h3>Type · Space · Icons</h3>
+  <div class="cards">
+    <div class="card"><h3>Type</h3><ul>
+      <li><b>Inter</b> (400–700) for UI; drama titles in 700 tight-tracked with the <b>Korean title (한글) as a quiet sub-line</b> — the Korean-inspired display treatment, used sparingly (§35A).</li>
+      <li>Scale: 11 caption · 13 small · 15 body · 17 strong · 20 title · 24 H2 · 30 H1 · 40 hero.</li>
+      <li>Voice: warm, fandom-fluent, plain. Never corporate. Empty states speak to the fan.</li>
+    </ul></div>
+    <div class="card"><h3>Space &amp; grid</h3><ul>
+      <li>4pt base: 4/8/12/16/24/32/48 · gutter 16 · card padding 16 (§35A) · feed gap 8 · sections 24.</li>
+      <li><b>The 2:3 law</b>: K-drama posters are 2:3 everywhere — the system's distinctive rhythm. Post stills 4:5 or 16:9.</li>
+      <li><b>Thumb reach</b>: primary actions in the bottom third or top-right 100pt; three permanent anchors (tab bar, composer, raised Create).</li>
+    </ul></div>
+    <div class="card"><h3>Icons &amp; motion</h3><ul>
+      <li>24px custom line icons, 1.8px stroke, rounded caps. Home tab = the wave; Create = raised gradient circle (the app's only shadowed element).</li>
+      <li>Verified = gradient <b>wave seal</b> (not a checkmark badge). Airing = coral dot, one calm pulse / 4s.</li>
+      <li>Motion: spring sheets, 180ms tab crossfade, 250ms pushes, follow ripple (a wave), spoiler blur 24→0 in 300ms, wave-draw loading. Reduced-motion collapses everything to 80ms fades.</li>
+    </ul></div>
+  </div>
+
+  <h3>Signature components</h3>
+  <div class="cards">
+    <div class="card"><h3>Post card (the workhorse, §51)</h3><p style="font-size:13.5px"><b>Avatar · @username · time … [drama chip] · ⋯</b><br>body text (15pt, expandable) → 4:5 image (spoiler-veiled when flagged) → [♥ 1,284] [💬 342] [↻ 96] [🔖]<br>
+    <b>The drama chip</b> — a 16×24 2:3 thumbnail + "My Bias, My Boss · Ep 12" — is the system's signature affordance: how "a post about an episode knows which drama and episode it belongs to" (§36.6) becomes one component.</p></div>
+    <div class="card"><h3>Spoiler veil (§9 — the signature interaction)</h3><p style="font-size:13.5px">Media blurred 24pt + brand-grad veil 35% + centered pill "⚠ Spoiler · My Bias, My Boss · Episode 12 · Tap to reveal". Episode page adds a banner: "⚠ Spoilers for Episode 12 — you're through Episode 11" with <b>Reveal for session</b> / <b>I watched Ep 12 ✓</b>. Blurring is presentation, never deletion — always revealable.</p></div>
+    <div class="card"><h3>States (§38 — deliberate, never blank)</h3><ul style="font-size:13.5px">
+      <li><b>Loading</b>: skeleton cards with wave shimmer (1.2s).</li>
+      <li><b>Empty</b>: wave-line illustration + voice + one action. Locked copy: "Your fandom is quiet here. Follow a few dramas or communities to get things moving." / "No matching dramas, actors, users, or communities found." / "You're caught up."</li>
+      <li><b>Error</b>: broken wave + "Couldn't load this right now." + Retry.</li>
+      <li><b>Offline</b>: "Offline — showing cached content" pill (no fake local writes).</li>
+    </ul></div>
+  </div>
+
+  <!-- ============================ 4. MOCKUPS ============================ -->
+  <h2><span class="n">4</span> Screen Mockups (Section 37 + Section 38 states)</h2>
+  <p class="sub">Same world-state on every screen so they're one app: signed-in <b>@hallyu_hana (Hana Kim)</b>, through <b>Episode 11</b> of the hero drama <b>My Bias, My Boss</b> (최애의 사원 — tvN, Mon–Tue 8:50pm KST; Ep 12 "The Confession Tape" aired Sep 9, 2026; Ep 13 airs Mon Sep 14; Kang Hoon / Kim Hye-jun / Cha Woo-min). Real 2026 titles throughout (A Bona Fide Killer, The Scandal, A Love Other Than Yours, Queen of Tears, Paradise…). Full world-state bible: <code>docs/04-mockups/README.md</code>. All 35 screens rendered under one design system; full Section 37 inventory plus the Section 38 states. <b>Client is Kotlin, Android-native</b> (technology change recorded in docs/02b) — no build has started; awaiting review.</p>
+
+  <h3>System</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/00-design-system.png" alt="Design system token sheet"><div class="cap">00 · Design system<span>palette, type, buttons, chips, cards, reactions, tab bar</span></div></div>
+  </div>
+
+  <h3>Authentication (5)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/auth/01-splash.png" alt="Splash"><div class="cap">01 · Splash<span>wave mark + HALLYU + 한류 tagline</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/auth/02-welcome.png" alt="Welcome"><div class="cap">02 · Welcome<span>"Where the Wave Lives" + cinematic hero card</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/auth/03-signup.png" alt="Sign up"><div class="cap">03 · Sign up<span>email + Apple + Google (A-1 pending)</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/auth/04-login.png" alt="Login"><div class="cap">04 · Login<span>email + social, recovery link</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/auth/05-recovery.png" alt="Account recovery"><div class="cap">05 · Account recovery<span>reset link flow</span></div></div>
+  </div>
+
+  <h3>Onboarding (5)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/onboarding/06-interests.png" alt="Onboarding interests"><div class="cap">06 · Interests<span>genre grid, multi-select</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/onboarding/07-dramas.png" alt="Onboarding dramas"><div class="cap">07 · Dramas<span>2:3 poster selection, up to 5</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/onboarding/08-actors.png" alt="Onboarding actors"><div class="cap">08 · Actors<span>circle portraits, multi-select</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/onboarding/09-communities.png" alt="Onboarding communities"><div class="cap">09 · Communities / accounts<span>join + official verified accounts</span></div></div>
+    <div class="shot"><img src="docs/04-mockups/onboarding/10-completion.png" alt="HALLYU mockup 10"><div class="cap">10 · wave burst + feed preview + Enter my feed</div></div>
+  </div>
+
+  <h3>Main (6)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/main/11-home-foryou.png" alt="HALLYU mockup 11"><div class="cap">11 · Now Airing module + ranked feed + drama chips + official post</div></div>
+    <div class="shot"><img src="docs/04-mockups/main/12-home-following.png" alt="HALLYU mockup 12"><div class="cap">12 · chronological, community card, zero ranking</div></div>
+    <div class="shot"><img src="docs/04-mockups/main/13-explore.png" alt="HALLYU mockup 13"><div class="cap">13 · Trending velocity list + Airing carousel + communities</div></div>
+    <div class="shot"><img src="docs/04-mockups/main/14-create.png" alt="HALLYU mockup 14"><div class="cap">14 · drama/ep tagging, media, spoiler toggle, AI spoiler note</div></div>
+    <div class="shot"><img src="docs/04-mockups/main/15-notifications.png" alt="HALLYU mockup 15"><div class="cap">15 · 3 categories, deep-link targets, mini posters</div></div>
+    <div class="shot"><img src="docs/04-mockups/main/16-profile.png" alt="HALLYU mockup 16"><div class="cap">16 · banner, stats, tab row, post grid</div></div>
+  </div>
+
+  <h3>Content (8)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/content/17-post-detail.png" alt="HALLYU mockup 17"><div class="cap">17 · author row, drama chip, 4:5 still, reaction bar</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/18-comments.png" alt="HALLYU mockup 18"><div class="cap">18 · 3-level nesting, wave-line indent guides, author tag</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/19-drama-hub.png" alt="HALLYU mockup 19"><div class="cap">19 · backdrop, poster, 한글 title, cast, episode list, community teaser</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/20-episode-page.png" alt="HALLYU mockup 20"><div class="cap">20 · spoiler banner (through Ep 11) → veiled discussion + spoiler composer</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/21-actor-page.png" alt="HALLYU mockup 21"><div class="cap">21 · Kim Soo-hyun — portrait, In posters, recent posts, fan community</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/22-community-page.png" alt="HALLYU mockup 22"><div class="cap">22 · banner, rules, pinned mod post, community feed</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/23-search-results.png" alt="HALLYU mockup 23"><div class="cap">23 · top result + dramas/actors/communities/hashtags/posts</div></div>
+    <div class="shot"><img src="docs/04-mockups/content/24-hashtag-page.png" alt="HALLYU mockup 24"><div class="cap">24 · #MyBiasMyBoss — Trending #1, Latest/Top, tagged feed</div></div>
+  </div>
+
+  <h3>Profile (7)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/profile/25-profile-posts.png" alt="HALLYU mockup 25"><div class="cap">25 · compact header + 2-column grid</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/26-profile-saved.png" alt="HALLYU mockup 26"><div class="cap">26 · saved posts + saved dramas with progress</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/27-followers.png" alt="HALLYU mockup 27"><div class="cap">27 · mutual/new chips, follow states</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/28-following.png" alt="HALLYU mockup 28"><div class="cap">28 · fans, official, community, actor rows</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/29-currently-watching.png" alt="HALLYU mockup 29"><div class="cap">29 · progress bars, resume links, completed, spoiler footnote</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/30-my-communities.png" alt="HALLYU mockup 30"><div class="cap">30 · member/pending states, create row</div></div>
+    <div class="shot"><img src="docs/04-mockups/profile/31-settings.png" alt="HALLYU mockup 31"><div class="cap">31 · account/fandom/trust/general, logout, delete</div></div>
+  </div>
+
+  <h3>States (3)</h3>
+  <div class="grid">
+    <div class="shot"><img src="docs/04-mockups/states/32-empty.png" alt="HALLYU mockup 32"><div class="cap">32 · wave illustration + Your fandom is quiet here…</div></div>
+    <div class="shot"><img src="docs/04-mockups/states/33-loading.png" alt="HALLYU mockup 33"><div class="cap">33 · skeleton cards + wave shimmer</div></div>
+    <div class="shot"><img src="docs/04-mockups/states/34-error.png" alt="HALLYU mockup 34"><div class="cap">34 · broken wave + Couldn't load this right now. + Retry</div></div>
+  </div>
+
+  <p style="margin-top:20px"><span class="chip">moderator/admin screens</span> deliberately have no mockups — internal tooling, permission-gated (<code>admin/queue</code>), per the gate.</p>
+
+  <footer>HALLYU pre-build gate · prepared 2026-09-11 · docs 01–03 + mockups in <code>docs/04-mockups/</code> · awaiting review before Section 40 Phase 1</footer>
+</div>
+</body>
+</html>
