@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -173,13 +174,14 @@ private fun MasonryGrid(
     modifier: Modifier = Modifier,
     columns: Int,
     gap: Dp,
-    content: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Layout(content = content, modifier = modifier) { measurables, constraints ->
         with(LocalDensity.current) {
             val gapPx = gap.roundToPx()
             val colWidthPx = ((constraints.maxWidth - gapPx * (columns - 1)) / columns).coerceAtLeast(1)
-            val fixedWidth = Constraints.fixed(colWidthPx)
+            // Fixed width, unconstrained height — Constraints.fixed() would pin height to 0.
+            val fixedWidth = Constraints(minWidth = colWidthPx, maxWidth = colWidthPx)
             val colHeights = IntArray(columns)
             val placed = ArrayList<Triple<Placeable, Int, Int>>(measurables.size)
             measurables.forEach { m ->
